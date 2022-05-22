@@ -38,7 +38,6 @@ class FirebaseCrashlyticsReportTool implements CrashReportTool {
     try {
       function();
     } catch (e, s) {
-      print('$e');
       report(
         CrashError.fromNonFatalStackTrace(e, s,
             data: crashInformation, reason: context),
