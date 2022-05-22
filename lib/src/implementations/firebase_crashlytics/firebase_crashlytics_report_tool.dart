@@ -28,6 +28,23 @@ class FirebaseCrashlyticsReportTool implements CrashReportTool {
   Future<void> init() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
+
+  @override
+  void runZoneGuarded(
+    Function function, {
+    Object? crashInformation,
+    String? context,
+  }) {
+    try {
+      function();
+    } catch (e, s) {
+      print('$e');
+      report(
+        CrashError.fromNonFatalStackTrace(e, s,
+            data: crashInformation, reason: context),
+      );
+    }
+  }
 }
 
 class _DataInformation extends DiagnosticsProperty {
